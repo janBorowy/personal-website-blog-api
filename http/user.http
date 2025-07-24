@@ -1,0 +1,8 @@
+POST {{url}}/user/register
+Content-Type: application/json
+
+{
+  "username": "player123",
+  "email": "player@gmail.com",
+  "plainPassword": "12345678"
+}
