@@ -2,18 +2,28 @@ package pl.borovy.personalwebsiteblogapi.user;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.IdClass;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
-import org.springframework.data.annotation.Reference;
+import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
-import pl.borovy.personalwebsiteblogapi.model.User;
 
 @Data
 @Entity
+@IdClass(UserAuthorityPrimaryKey.class)
+@Builder
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
 public class UserAuthority implements GrantedAuthority {
 
-    @Column(nullable = false)
-    @Reference(to = User.class)
-    private String userId;
+    @Id
+    @Column(name = "USER_ID", nullable = false)
+    private Long userId;
+
+    @Id
     @Column(nullable = false, length = 64)
     private String authority;
 

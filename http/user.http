@@ -6,3 +6,15 @@ Content-Type: application/json
   "email": "player@gmail.com",
   "plainPassword": "12345678"
 }
+
+###
+POST {{url}}/login
+Content-Type: application/json
+
+{
+  "email": "admin@admin.com",
+  "plainPassword": "admin"
+}
+
+###
+GET {{url}}/user/1

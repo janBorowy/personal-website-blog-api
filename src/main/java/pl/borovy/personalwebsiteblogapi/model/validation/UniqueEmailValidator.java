@@ -1,4 +1,4 @@
-package pl.borovy.personalwebsiteblogapi.validation;
+package pl.borovy.personalwebsiteblogapi.model.validation;
 
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;

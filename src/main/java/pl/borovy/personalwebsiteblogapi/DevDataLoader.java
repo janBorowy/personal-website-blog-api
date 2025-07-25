@@ -8,6 +8,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import pl.borovy.personalwebsiteblogapi.model.User;
+import pl.borovy.personalwebsiteblogapi.user.UserAuthority;
 import pl.borovy.personalwebsiteblogapi.user.UserRepository;
 
 @Configuration
@@ -17,12 +18,15 @@ public class DevDataLoader {
     @Bean
     public ApplicationRunner userDataLoader(UserRepository userRepository, PasswordEncoder passwordEncoder) {
         return args -> {
-            userRepository.save(User.builder()
+            var admin = userRepository.save(User.builder()
                             .email("admin@admin.com")
                             .username("admin")
+                            .enabled(true)
                             .encodedPassword(passwordEncoder.encode("admin"))
                             .createdAt(Date.valueOf(LocalDate.now()))
                     .build());
+            admin.getAuthorities().add(new UserAuthority(admin.getId(), "ADMIN"));
+            userRepository.save(admin);
         };
     }
 

@@ -10,6 +10,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import java.sql.Date;
+import java.util.ArrayList;
 import java.util.List;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -41,9 +42,10 @@ public class User implements UserDetails {
     private String encodedPassword;
     @Column(nullable = false)
     private Date createdAt;
-    @OneToMany(cascade = CascadeType.REMOVE)
+    @Builder.Default
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "USER_ID")
-    private List<UserAuthority> authorities;
+    private List<UserAuthority> authorities = new ArrayList<>();
 
     @Override
     public String getPassword() {
