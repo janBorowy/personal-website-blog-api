@@ -2,11 +2,13 @@ package pl.borovy.personalwebsiteblogapi.model;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import lombok.Builder;
 import lombok.Value;
 import org.hibernate.validator.constraints.Length;
 import pl.borovy.personalwebsiteblogapi.model.validation.UniqueEmail;
 
 @Value
+@Builder
 public class UserRegisterRequest {
 
     @NotBlank
