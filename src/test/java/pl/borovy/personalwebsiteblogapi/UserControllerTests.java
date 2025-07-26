@@ -14,6 +14,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithAnonymousUser;
 import org.springframework.security.test.context.support.WithMockUser;
@@ -21,9 +22,12 @@ import org.springframework.test.web.servlet.MockMvc;
 import pl.borovy.personalwebsiteblogapi.model.UserRegisterRequest;
 import pl.borovy.personalwebsiteblogapi.user.UserRepository;
 
-@SpringBootTest
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureMockMvc
-class UserControllerTests {
+class UserControllerTests extends PostgreSqlTestContainerConfig {
+
+    @LocalServerPort
+    private Integer port;
 
     @Autowired
     private MockMvc mvc;
@@ -31,10 +35,14 @@ class UserControllerTests {
     @Autowired
     private UserRepository userRepository;
 
+    private String getFullUrl(String path) {
+        return "http://localhost:%s%s".formatted(port, path);
+    }
+
     @WithAnonymousUser
     @Test
     void getUserByIdWhenNotAuthorized() throws Exception {
-        mvc.perform(get("/user/1"))
+        mvc.perform(get(getFullUrl("/user/1")))
                 .andExpect(status().isUnauthorized());
     }
 
@@ -43,7 +51,7 @@ class UserControllerTests {
     void getUserByIdWhenLoggedInAsUser() throws Exception {
         var id = userRepository.save(USER).getId();
 
-        mvc.perform(get("/user/%s".formatted(id)))
+        mvc.perform(get(getFullUrl("/user/%s".formatted(id))))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.id").value(USER.getId()))
@@ -54,14 +62,14 @@ class UserControllerTests {
     @WithMockUser
     @Test
     void getUserByIdWhichDoesNotExist() throws Exception {
-        mvc.perform(get("/user/100"))
+        mvc.perform(get(getFullUrl("/user/100")))
                 .andExpect(status().isNotFound());
     }
 
     @WithAnonymousUser
     @Test
     void registerNewUser() throws Exception {
-        mvc.perform(post("/user/register")
+        mvc.perform(post(getFullUrl("/user/register"))
                         .with(csrf())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(OBJECT_MAPPER.writeValueAsString(

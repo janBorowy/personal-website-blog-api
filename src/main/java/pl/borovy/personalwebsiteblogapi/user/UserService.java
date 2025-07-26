@@ -28,6 +28,7 @@ public class UserService {
                 .username(request.getUsername())
                 .encodedPassword(passwordEncoder.encode(request.getPlainPassword()))
                 .createdAt(Date.valueOf(LocalDate.now()))
+                .enabled(true)
                 .build();
         return userRepository.save(user);
     }

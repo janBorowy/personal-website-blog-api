@@ -1,0 +1,22 @@
+# Use postgres/example user/password credentials
+
+services:
+
+  db:
+    ports:
+      - "5432:5432"
+    image: postgres
+    restart: no
+    shm_size: 128mb
+    volumes:
+      - ./postgres-data:/var/lib/postgresql/data
+      - type: tmpfs
+        target: /dev/shm
+        tmpfs:
+          # TODO: set size before deployment
+          size: 134217728
+    environment:
+      POSTGRES_DB: jb-blog
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin
+

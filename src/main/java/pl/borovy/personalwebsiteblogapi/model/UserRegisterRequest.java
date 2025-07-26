@@ -12,7 +12,7 @@ import pl.borovy.personalwebsiteblogapi.model.validation.UniqueEmail;
 public class UserRegisterRequest {
 
     @NotBlank
-    @Length(min = 8, max = 64, message = "Username's length must be between 8 to 64 characters")
+    @Length(min = 5, max = 64, message = "Username's length must be between 5 to 64 characters")
     String username;
     @Email(message = "Invalid email format")
     @NotBlank(message = "Email can't be blank")
