@@ -2,6 +2,7 @@ package pl.borovy.personalwebsiteblogapi;
 
 import java.sql.Date;
 import java.time.LocalDate;
+import java.util.Set;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -19,13 +20,17 @@ public class DevDataLoader {
     public ApplicationRunner userDataLoader(UserRepository userRepository, PasswordEncoder passwordEncoder) {
         return args -> {
             var admin = userRepository.save(User.builder()
-                            .email("admin@admin.com")
-                            .username("admin")
-                            .enabled(true)
-                            .encodedPassword(passwordEncoder.encode("admin"))
-                            .createdAt(Date.valueOf(LocalDate.now()))
+                    .email("admin@admin.com")
+                    .username("admin")
+                    .enabled(true)
+                    .encodedPassword(passwordEncoder.encode("admin"))
+                    .createdAt(Date.valueOf(LocalDate.now()))
                     .build());
-            admin.getAuthorities().add(new UserAuthority(admin.getId(), "ADMIN"));
+            admin.getAuthorities().addAll(Set.of(
+                            new UserAuthority(admin.getId(), "USER"),
+                            new UserAuthority(admin.getId(), "ADMIN")
+                    )
+            );
             userRepository.save(admin);
         };
     }
