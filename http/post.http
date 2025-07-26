@@ -1,0 +1,20 @@
+POST {{url}}/login
+Content-Type: application/json
+
+{
+  "username": "admin",
+  "plainPassword": "admin"
+}
+
+> {% client.global.set("auth_token", response.body); %}
+
+###
+
+POST {{url}}/post
+Content-Type: application/json
+Authorization: Bearer {{auth_token}}
+
+{
+  "title": "Przygody młodego Kubusia II",
+  "content": "# \ud83d\udcaa **No hejka!**  \n## Co tam si\u0119 z Tob\u0105 dzieje?\n\n---\n\n> _Sk\u0105d to zw\u0105tpienie?_  \n> _Dlaczego chcesz teraz si\u0119 podda\u0107,_  \n> _tylko dlatego, \u017ce **raz czy drugi** Ci nie wysz\u0142o?_\n\n---\n\n### \u274c To **nie** jest \u017caden pow\u00f3d.\n\n---\n\n## Musisz:\n- **I\u015b\u0107** \ud83c\udfc3  \n- **Walczy\u0107** \ud83c\udf4a  \n- **Prze\u0107 do przodu** \ud83d\ude80\n\n---\n\n### \ud83c\udf1f Osi\u0105gniesz **cel**.  \nNie dzi\u015b? To jutro.  \nNie jutro? To za tydzie\u0144.  \nAle **osi\u0105gniesz go**.\n\n---\n\n> **Nie wa\u017cne**, \u017ce wszystko dooko\u0142a jest przeciwko Tobie.  \n> **Najwa\u017cniejsze** jest to, \u017ce masz w sobie **wol\u0119 zwyci\u0119stwa**.  \n> \ud83e\udde0\u2764\ufe0f\ud83d\udd25\n\n---\n\n### **To si\u0119 liczy.**\n\nKa\u017cdy mo\u017ce osi\u0105gn\u0105\u0107 sw\u00f3j cel.  \n_Niewa\u017cne, czy taki czy inny._  \nAle trzeba **i\u015b\u0107**.  \nTrzeba **walczy\u0107**.\n\n---\n\n## \u26a0\ufe0f **A teraz\u2026**  \nMasz **3 sekundy**, \u017ceby si\u0119 **otrz\u0105sn\u0105\u0107**!  \n1\u20e3  \n2\u20e3  \n3\u20e3  \n\n---\n\n### \u270a Powiedz sobie:\n\n# > \"_**Dobra, basta!**_\"  \n## > \"_**Pi\u0119\u015bci\u0105 w st\u00f3\u0142.**_\"  \n## > \"_**Id\u0119 do przodu i osi\u0105gam sw\u00f3j cel.**_\"\n\n---\n\n### \ud83e\udde1 **Pozdro.**\n\n---\n\n#### #silownia #pasta #karmowski #kaszajaglana #heheszki"
+}

@@ -8,15 +8,16 @@ import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import pl.borovy.personalwebsiteblogapi.model.User;
-import pl.borovy.personalwebsiteblogapi.model.UserRegisterRequest;
+import pl.borovy.personalwebsiteblogapi.model.requests.UserRegisterRequest;
 
 @Service
 @RequiredArgsConstructor
 public class UserService {
 
-    private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final UserRepository userRepository;
 
     public Optional<User> findById(@Nonnull Long id) {
         return userRepository.findById(id);
@@ -33,8 +34,12 @@ public class UserService {
         return userRepository.save(user);
     }
 
-    public URI getURI(User user) {
-        return URI.create("http://localhost:8080/user/%d".formatted(user.getId()));
+    public URI getLocation(User user) {
+        return ServletUriComponentsBuilder
+                .fromCurrentRequest()
+                .path("/{id}")
+                .buildAndExpand(user.getId())
+                .toUri();
     }
 
 }

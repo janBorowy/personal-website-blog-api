@@ -9,8 +9,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import pl.borovy.personalwebsiteblogapi.model.User;
-import pl.borovy.personalwebsiteblogapi.model.UserRegisterRequest;
+import pl.borovy.personalwebsiteblogapi.mappers.UserToUserResponseMapper;
+import pl.borovy.personalwebsiteblogapi.model.requests.UserRegisterRequest;
 
 @RestController
 @RequestMapping(value = "/user", produces = "application/json")
@@ -22,7 +22,7 @@ public class UserController {
     @GetMapping("/{id}")
     public ResponseEntity<UserResponse> getUser(@PathVariable("id") Long id) {
         return userService.findById(id)
-                .map(this::userToResponse)
+                .map(UserToUserResponseMapper.INSTANCE::map)
                 .map(it -> ResponseEntity.ok().body(it))
                 .orElse(ResponseEntity.notFound().build());
     }
@@ -30,18 +30,8 @@ public class UserController {
     @PostMapping(value = "/register", consumes = "application/json")
     public ResponseEntity<UserResponse> registerUser(@Valid @RequestBody UserRegisterRequest request) {
         var registeredUser = userService.registerUser(request);
-        return ResponseEntity.created(userService.getURI(registeredUser))
-                .body(userToResponse(registeredUser));
-    }
-
-    private UserResponse userToResponse(User user) {
-        assert user != null;
-
-        return UserResponse.builder()
-                .id(user.getId())
-                .username(user.getUsername())
-                .email(user.getEmail())
-                .build();
+        return ResponseEntity.created(userService.getLocation(registeredUser))
+                .body(UserToUserResponseMapper.INSTANCE.map(registeredUser));
     }
 
 }

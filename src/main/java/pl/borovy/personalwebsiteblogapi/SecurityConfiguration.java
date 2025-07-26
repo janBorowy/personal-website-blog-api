@@ -3,6 +3,7 @@ package pl.borovy.personalwebsiteblogapi;
 import java.util.Map;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -30,7 +31,8 @@ public class SecurityConfiguration {
         http.csrf(AbstractHttpConfigurer::disable);
         http.authorizeHttpRequests(authorizeHttpRequests -> {
             authorizeHttpRequests.requestMatchers("/login").permitAll();
-            authorizeHttpRequests.requestMatchers("/user/register").permitAll();
+            authorizeHttpRequests.requestMatchers(HttpMethod.POST, "/user/register").permitAll();
+            authorizeHttpRequests.requestMatchers(HttpMethod.POST, "/post").hasAuthority(Authority.ADMIN.scope());
             authorizeHttpRequests.anyRequest().authenticated();
         });
         http.oauth2ResourceServer(oauth2 ->

@@ -18,7 +18,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
-import pl.borovy.personalwebsiteblogapi.user.UserAuthority;
 
 @Data
 @Builder

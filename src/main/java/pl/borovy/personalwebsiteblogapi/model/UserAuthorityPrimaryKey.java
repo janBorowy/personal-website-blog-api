@@ -1,4 +1,4 @@
-package pl.borovy.personalwebsiteblogapi.user;
+package pl.borovy.personalwebsiteblogapi.model;
 
 import java.io.Serializable;
 import lombok.Data;

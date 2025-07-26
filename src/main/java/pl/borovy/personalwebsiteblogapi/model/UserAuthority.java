@@ -1,4 +1,4 @@
-package pl.borovy.personalwebsiteblogapi.user;
+package pl.borovy.personalwebsiteblogapi.model;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

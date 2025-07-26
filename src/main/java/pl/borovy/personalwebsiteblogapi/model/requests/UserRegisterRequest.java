@@ -1,4 +1,4 @@
-package pl.borovy.personalwebsiteblogapi.model;
+package pl.borovy.personalwebsiteblogapi.model.requests;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;

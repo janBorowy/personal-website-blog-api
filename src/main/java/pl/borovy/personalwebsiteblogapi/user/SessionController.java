@@ -2,6 +2,7 @@ package pl.borovy.personalwebsiteblogapi.user;
 
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
@@ -15,7 +16,7 @@ import org.springframework.security.oauth2.jwt.JwtEncoderParameters;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-import pl.borovy.personalwebsiteblogapi.model.LoginRequest;
+import pl.borovy.personalwebsiteblogapi.model.requests.LoginRequest;
 
 @RestController
 @RequiredArgsConstructor
@@ -31,7 +32,7 @@ public class SessionController {
 
     @PostMapping(value = "/login", consumes = "application/json")
     public ResponseEntity<String> login(@RequestBody LoginRequest loginRequest) {
-        var authenticationRequest = UsernamePasswordAuthenticationToken.unauthenticated(loginRequest.getEmail(), loginRequest.getPlainPassword());
+        var authenticationRequest = UsernamePasswordAuthenticationToken.unauthenticated(loginRequest.getUsername(), loginRequest.getPlainPassword());
         var authentication = authenticationManager.authenticate(authenticationRequest);
         var claims = getClaimsSet(authentication);
         var token = jwtEncoder.encode(JwtEncoderParameters.from(claims)).getTokenValue();
@@ -43,9 +44,9 @@ public class SessionController {
                 .issuer(applicationName)
                 .expiresAt(Instant.now().plus(TOKEN_EXPIRATION_TIME_IN_HOURS, ChronoUnit.HOURS))
                 .subject(authentication.getName())
-                .claim("roles", authentication.getAuthorities().stream()
+                .claim("scope", authentication.getAuthorities().stream()
                         .map(GrantedAuthority::getAuthority)
-                        .toList())
+                        .collect(Collectors.joining(" ")))
                 .build();
     }
 
