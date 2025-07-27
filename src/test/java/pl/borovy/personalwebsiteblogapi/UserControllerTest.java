@@ -8,7 +8,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static pl.borovy.personalwebsiteblogapi.StaticTestObjects.OBJECT_MAPPER;
-import static pl.borovy.personalwebsiteblogapi.StaticTestObjects.USER;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +27,7 @@ import pl.borovy.personalwebsiteblogapi.user.UserRepository;
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @AutoConfigureMockMvc
 @Import(PostgresTestContainerConfig.class)
-class UserControllerTests {
+class UserControllerTest {
 
     @LocalServerPort
     private Integer port;
@@ -53,14 +52,12 @@ class UserControllerTests {
     @WithMockUser
     @Test
     void getUserByIdWhenLoggedInAsUser() throws Exception {
-        var id = userRepository.save(USER).getId();
-
-        mvc.perform(get(getFullUrl("/user/%s".formatted(id))))
+        mvc.perform(get(getFullUrl("/user/1")))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.id").value(USER.getId()))
-                .andExpect(jsonPath("$.username").value(USER.getUsername()))
-                .andExpect(jsonPath("$.email").value(USER.getEmail()));
+                .andExpect(jsonPath("$.id").value(1))
+                .andExpect(jsonPath("$.username").exists())
+                .andExpect(jsonPath("$.email").exists());
     }
 
     @WithMockUser

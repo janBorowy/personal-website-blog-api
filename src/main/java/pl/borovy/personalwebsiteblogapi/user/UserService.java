@@ -1,6 +1,7 @@
 package pl.borovy.personalwebsiteblogapi.user;
 
 import jakarta.annotation.Nonnull;
+import jakarta.transaction.Transactional;
 import java.net.URI;
 import java.sql.Date;
 import java.time.LocalDate;
@@ -9,7 +10,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+import pl.borovy.personalwebsiteblogapi.Authority;
 import pl.borovy.personalwebsiteblogapi.model.User;
+import pl.borovy.personalwebsiteblogapi.model.UserAuthority;
 import pl.borovy.personalwebsiteblogapi.model.requests.UserRegisterRequest;
 
 @Service
@@ -18,11 +21,13 @@ public class UserService {
 
     private final PasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
+    private final UserAuthorityRepository userAuthorityRepository;
 
     public Optional<User> findById(@Nonnull Long id) {
         return userRepository.findById(id);
     }
 
+    @Transactional
     public User registerUser(@Nonnull UserRegisterRequest request) {
         var user = User.builder()
                 .email(request.getEmail())
@@ -31,7 +36,9 @@ public class UserService {
                 .createdAt(Date.valueOf(LocalDate.now()))
                 .enabled(true)
                 .build();
-        return userRepository.save(user);
+        var savedUser = userRepository.save(user);
+        userAuthorityRepository.save(new UserAuthority(savedUser.getId(), Authority.USER.scope()));
+        return savedUser;
     }
 
     public URI getLocation(User user) {

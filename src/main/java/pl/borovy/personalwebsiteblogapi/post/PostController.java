@@ -23,7 +23,7 @@ public class PostController {
     private final PostService postService;
 
     @PostMapping
-    @Operation(security = { @SecurityRequirement(name = "auth") })
+    @Operation(summary = "Create a new blog post", security = {@SecurityRequirement(name = "auth", scopes = { "ADMIN" })})
     public ResponseEntity<PostResponse> createPost(@Valid @RequestBody SavePostRequest request,
                                                    @Nonnull Authentication authentication) {
         var savedPost = postService.savePost(request, authentication.getName());
