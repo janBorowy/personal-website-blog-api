@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import pl.borovy.personalwebsiteblogapi.mappers.PostToPostResponseMapper;
-import pl.borovy.personalwebsiteblogapi.model.PostResponse;
+import pl.borovy.personalwebsiteblogapi.model.response.PostResponse;
 import pl.borovy.personalwebsiteblogapi.model.requests.SavePostRequest;
 
 @RestController

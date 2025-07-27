@@ -1,9 +1,8 @@
-package pl.borovy.personalwebsiteblogapi.model;
+package pl.borovy.personalwebsiteblogapi.model.response;
 
 import java.sql.Date;
 import lombok.Builder;
 import lombok.Value;
-import pl.borovy.personalwebsiteblogapi.user.UserResponse;
 
 @Value
 @Builder

@@ -4,7 +4,7 @@ package pl.borovy.personalwebsiteblogapi.mappers;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 import pl.borovy.personalwebsiteblogapi.model.Post;
-import pl.borovy.personalwebsiteblogapi.model.PostResponse;
+import pl.borovy.personalwebsiteblogapi.model.response.PostResponse;
 
 @Mapper(uses = {
         UserToUserResponseMapper.class

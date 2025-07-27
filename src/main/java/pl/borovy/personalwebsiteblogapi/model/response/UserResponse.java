@@ -1,4 +1,4 @@
-package pl.borovy.personalwebsiteblogapi.user;
+package pl.borovy.personalwebsiteblogapi.model.response;
 
 import lombok.Builder;
 import lombok.Value;

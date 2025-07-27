@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import pl.borovy.personalwebsiteblogapi.mappers.UserToUserResponseMapper;
 import pl.borovy.personalwebsiteblogapi.model.requests.UserRegisterRequest;
+import pl.borovy.personalwebsiteblogapi.model.response.UserResponse;
 
 @RestController
 @RequestMapping(value = "/user", produces = "application/json")

@@ -3,7 +3,7 @@ package pl.borovy.personalwebsiteblogapi.mappers;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 import pl.borovy.personalwebsiteblogapi.model.User;
-import pl.borovy.personalwebsiteblogapi.user.UserResponse;
+import pl.borovy.personalwebsiteblogapi.model.response.UserResponse;
 
 @Mapper
 public interface UserToUserResponseMapper {

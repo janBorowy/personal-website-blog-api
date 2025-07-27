@@ -15,8 +15,10 @@ import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 import org.testcontainers.utility.DockerImageName;
 import pl.borovy.personalwebsiteblogapi.model.Post;
+import pl.borovy.personalwebsiteblogapi.model.PostTag;
 import pl.borovy.personalwebsiteblogapi.model.UserAuthority;
 import pl.borovy.personalwebsiteblogapi.post.PostRepository;
+import pl.borovy.personalwebsiteblogapi.post.PostTagRepository;
 import pl.borovy.personalwebsiteblogapi.user.UserRepository;
 
 @TestConfiguration
@@ -34,7 +36,7 @@ public class PostgresTestContainerConfig {
     }
 
     @Bean
-    public ApplicationRunner loadTestData(UserRepository userRepository, PostRepository postRepository) {
+    public ApplicationRunner loadTestData(UserRepository userRepository, PostRepository postRepository, PostTagRepository postTagRepository) {
         return args -> {
             var savedAdmin = userRepository.save(ADMIN);
             savedAdmin.setAuthorities(List.of(
@@ -53,6 +55,11 @@ public class PostgresTestContainerConfig {
                             .title("Test post")
                             .content("# this is for testing purposes")
                             .createdAt(Date.valueOf(LocalDate.now()))
+                    .build());
+
+            postTagRepository.save(PostTag.builder()
+                            .name("test post tag")
+                            .description("this is a test post tag for testing purposes")
                     .build());
         };
     }

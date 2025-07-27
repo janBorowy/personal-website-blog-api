@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import java.sql.Date;
 import java.time.LocalDate;
 import pl.borovy.personalwebsiteblogapi.model.Post;
+import pl.borovy.personalwebsiteblogapi.model.PostTag;
 import pl.borovy.personalwebsiteblogapi.model.User;
 
 public class StaticTestObjects {
@@ -29,5 +30,10 @@ public class StaticTestObjects {
             .title("post title")
             .content("post content")
             .createdAt(Date.valueOf(LocalDate.now()))
+            .build();
+
+    public static final PostTag POST_TAG = PostTag.builder()
+            .name("post tag")
+            .description("post tag description")
             .build();
 }
