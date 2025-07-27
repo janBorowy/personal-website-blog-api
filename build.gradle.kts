@@ -33,6 +33,7 @@ dependencies {
     implementation("com.h2database:h2")
     implementation("org.springframework.boot:spring-boot-starter-oauth2-resource-server")
     implementation("org.mapstruct:mapstruct:1.6.3")
+    implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.8.9")
     testImplementation("org.testcontainers:junit-jupiter")
     testImplementation("org.springframework.boot:spring-boot-testcontainers")
     testImplementation("org.testcontainers:postgresql")

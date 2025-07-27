@@ -22,7 +22,8 @@ import pl.borovy.personalwebsiteblogapi.model.requests.LoginRequest;
 @RequiredArgsConstructor
 public class LoginController {
 
-    private static final int TOKEN_EXPIRATION_TIME_IN_HOURS = 3;
+    // TODO: add refresh token
+    private static final int TOKEN_EXPIRATION_TIME_IN_HOURS = 1;
 
     private final AuthenticationManager authenticationManager;
     private final JwtEncoder jwtEncoder;

@@ -1,5 +1,7 @@
 package pl.borovy.personalwebsiteblogapi.post;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.annotation.Nonnull;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -21,6 +23,7 @@ public class PostController {
     private final PostService postService;
 
     @PostMapping
+    @Operation(security = { @SecurityRequirement(name = "auth") })
     public ResponseEntity<PostResponse> createPost(@Valid @RequestBody SavePostRequest request,
                                                    @Nonnull Authentication authentication) {
         var savedPost = postService.savePost(request, authentication.getName());

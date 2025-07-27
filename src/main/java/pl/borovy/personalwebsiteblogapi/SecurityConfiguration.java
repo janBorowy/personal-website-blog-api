@@ -1,5 +1,6 @@
 package pl.borovy.personalwebsiteblogapi;
 
+import jakarta.servlet.http.HttpServletResponse;
 import java.util.Map;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -10,6 +11,7 @@ import org.springframework.security.authentication.dao.DaoAuthenticationProvider
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.DelegatingPasswordEncoder;
@@ -25,16 +27,24 @@ public class SecurityConfiguration {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http.csrf(Customizer.withDefaults())
+        // TODO: enable csrf and make it work with swagger
+        http.csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(authorizeHttpRequests -> {
                     authorizeHttpRequests.requestMatchers(HttpMethod.POST, "/login").permitAll();
                     authorizeHttpRequests.requestMatchers(HttpMethod.POST, "/user/register").permitAll();
                     authorizeHttpRequests.requestMatchers(HttpMethod.POST, "/post").hasAuthority(Authority.ADMIN.scope());
                     authorizeHttpRequests.requestMatchers("/error/**").permitAll();
+                    authorizeHttpRequests.requestMatchers("/swagger-ui.html", "/swagger-ui/**").permitAll();
+                    authorizeHttpRequests.requestMatchers("/v3/api-docs", "/v3/api-docs/**").permitAll();
                     authorizeHttpRequests.anyRequest().authenticated();
                 })
                 .oauth2ResourceServer(oauth2 ->
-                        oauth2.jwt(Customizer.withDefaults()));
+                        oauth2.jwt(Customizer.withDefaults()))
+                .logout(logout ->
+                        logout.permitAll()
+                                .logoutSuccessHandler((request, response, authentication) ->
+                                    response.setStatus(HttpServletResponse.SC_OK)
+                                ));
         return http.build();
     }
 
