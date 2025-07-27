@@ -7,8 +7,10 @@ import java.sql.Date;
 import java.time.LocalDate;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import pl.borovy.personalwebsiteblogapi.Authority;
 import pl.borovy.personalwebsiteblogapi.model.User;
@@ -29,6 +31,14 @@ public class UserService {
 
     @Transactional
     public User registerUser(@Nonnull UserRegisterRequest request) {
+        if (userRepository.existsUserByUsername(request.getUsername())) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User with given username exists");
+        }
+
+        if (userRepository.existsUserByEmail(request.getEmail())) {
+            throw  new ResponseStatusException(HttpStatus.BAD_REQUEST, "User with given email exists");
+        }
+
         var user = User.builder()
                 .email(request.getEmail())
                 .username(request.getUsername())

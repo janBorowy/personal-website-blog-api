@@ -1,6 +1,7 @@
 package pl.borovy.personalwebsiteblogapi;
 
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -8,8 +9,6 @@ import static pl.borovy.personalwebsiteblogapi.StaticTestObjects.OBJECT_MAPPER;
 import static pl.borovy.personalwebsiteblogapi.StaticTestObjects.POST;
 
 import org.junit.jupiter.api.Test;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -28,7 +27,6 @@ import pl.borovy.personalwebsiteblogapi.post.PostRepository;
 @Import(PostgresTestContainerConfig.class)
 class PostControllerTest {
 
-    private static final Logger log = LoggerFactory.getLogger(PostControllerTest.class);
     @LocalServerPort
     private Integer port;
 
@@ -69,6 +67,19 @@ class PostControllerTest {
                 .andExpect(jsonPath("$.id").exists())
                 .andExpect(jsonPath("$.title").value(POST.getTitle()))
                 .andExpect(jsonPath("$.content").value(POST.getContent()));
+    }
+
+    @Test
+    void getPostAnonymous() throws Exception {
+        mvc.perform(get(getFullUrl("/post/1")))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").value(1));
+    }
+
+    @Test
+    void getPostWhichDoesNotExist() throws Exception {
+        mvc.perform(get(getFullUrl("/post/100")))
+                .andExpect(status().isNotFound());
     }
 
 }

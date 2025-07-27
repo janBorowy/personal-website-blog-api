@@ -5,7 +5,6 @@ import jakarta.validation.constraints.NotBlank;
 import lombok.Builder;
 import lombok.Value;
 import org.hibernate.validator.constraints.Length;
-import pl.borovy.personalwebsiteblogapi.model.validation.UniqueEmail;
 
 @Value
 @Builder
@@ -16,7 +15,6 @@ public class UserRegisterRequest {
     String username;
     @Email(message = "Invalid email format")
     @NotBlank(message = "Email can't be blank")
-    @UniqueEmail(message = "User with given email already exists")
     String email;
     @NotBlank
     @Length(min = 8, max = 64, message = "Password must be between 8 to 64 characters")

@@ -5,7 +5,9 @@ import java.sql.Date;
 import java.time.LocalDate;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import pl.borovy.personalwebsiteblogapi.model.Post;
 import pl.borovy.personalwebsiteblogapi.model.requests.SavePostRequest;
@@ -19,6 +21,10 @@ public class PostService {
     private final UserRepository userRepository;
 
     public Post savePost(@NonNull SavePostRequest savePostRequest, @NonNull String username) {
+        if (postRepository.existsPostByTitle(savePostRequest.getTitle())) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Post with given title already exists");
+        }
+
         return postRepository.save(
                 Post.builder()
                         .author(userRepository.findByUsername(username)
@@ -28,6 +34,11 @@ public class PostService {
                         .createdAt(Date.valueOf(LocalDate.now()))
                         .build()
         );
+    }
+
+    public Post getPost(long id) {
+        return postRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "No post with given id exists"));
     }
 
     public URI getLocation(@NonNull Post post) {
