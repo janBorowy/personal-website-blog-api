@@ -12,9 +12,11 @@ import static pl.borovy.personalwebsiteblogapi.StaticTestObjects.USER;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
+import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithAnonymousUser;
 import org.springframework.security.test.context.support.WithMockUser;
@@ -23,8 +25,10 @@ import pl.borovy.personalwebsiteblogapi.model.requests.UserRegisterRequest;
 import pl.borovy.personalwebsiteblogapi.user.UserRepository;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @AutoConfigureMockMvc
-class UserControllerTests extends PostgreSqlTestContainerConfig {
+@Import(PostgresTestContainerConfig.class)
+class UserControllerTests {
 
     @LocalServerPort
     private Integer port;

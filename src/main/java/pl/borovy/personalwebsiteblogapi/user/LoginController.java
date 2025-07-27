@@ -20,7 +20,7 @@ import pl.borovy.personalwebsiteblogapi.model.requests.LoginRequest;
 
 @RestController
 @RequiredArgsConstructor
-public class SessionController {
+public class LoginController {
 
     private static final int TOKEN_EXPIRATION_TIME_IN_HOURS = 3;
 
