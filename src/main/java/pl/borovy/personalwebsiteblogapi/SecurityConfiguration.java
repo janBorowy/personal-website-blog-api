@@ -35,7 +35,8 @@ public class SecurityConfiguration {
                     authorizeHttpRequests.requestMatchers(HttpMethod.POST, "/post").hasAuthority(Authority.ADMIN.scope());
                     authorizeHttpRequests.requestMatchers(HttpMethod.GET, "/post/*").permitAll();
                     authorizeHttpRequests.requestMatchers(HttpMethod.GET, "/post-tag/*").permitAll();
-                    authorizeHttpRequests.requestMatchers(HttpMethod.POST, "/post-tag", "/post-tag/attach").hasAuthority(Authority.ADMIN.scope());
+                    authorizeHttpRequests.requestMatchers(HttpMethod.DELETE, "/post-tag/*").hasAuthority(Authority.ADMIN.scope());
+                    authorizeHttpRequests.requestMatchers(HttpMethod.POST, "/post-tag", "/post-tag/attach", "/post-tag/deattach").hasAuthority(Authority.ADMIN.scope());
                     authorizeHttpRequests.requestMatchers("/error/**").permitAll();
                     authorizeHttpRequests.requestMatchers("/swagger-ui.html", "/swagger-ui/**").permitAll();
                     authorizeHttpRequests.requestMatchers("/v3/api-docs", "/v3/api-docs/**").permitAll();

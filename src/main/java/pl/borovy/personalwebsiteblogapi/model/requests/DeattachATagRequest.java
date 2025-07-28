@@ -5,7 +5,7 @@ import lombok.Value;
 
 @Value
 @Builder
-public class AttachATagRequest {
+public class DeattachATagRequest {
 
     long postId;
     long tagId;

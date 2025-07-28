@@ -20,6 +20,13 @@ import lombok.Value;
 @NoArgsConstructor(access = AccessLevel.PROTECTED, force = true)
 public class PostTagReference {
 
+    public PostTagReference(long postId, long tagId) {
+        this.postId = postId;
+        this.tagId = tagId;
+        this.post = Post.builder().id(postId).build();
+        this.tag = PostTag.builder().id(tagId).build();
+    }
+
     @Id
     Long postId;
 

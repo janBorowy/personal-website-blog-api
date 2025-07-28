@@ -57,9 +57,21 @@ public class PostgresTestContainerConfig {
                             .createdAt(Date.valueOf(LocalDate.now()))
                     .build());
 
+            postRepository.save(Post.builder()
+                    .author(ADMIN)
+                    .title("Another test post")
+                    .content("# this is another post for testing additional purposes")
+                    .createdAt(Date.valueOf(LocalDate.now()))
+                    .build());
+
             postTagRepository.save(PostTag.builder()
                             .name("test post tag")
                             .description("this is a test post tag for testing purposes")
+                    .build());
+
+            postTagRepository.save(PostTag.builder()
+                    .name("another test post tag")
+                    .description("another this is a test post tag for testing purposes")
                     .build());
         };
     }
