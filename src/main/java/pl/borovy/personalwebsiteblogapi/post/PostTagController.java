@@ -1,8 +1,12 @@
 package pl.borovy.personalwebsiteblogapi.post;
 
 import io.swagger.v3.oas.annotations.Operation;
+import jakarta.annotation.Nonnull;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -54,6 +58,14 @@ public class PostTagController {
     public ResponseEntity<Void> deattachATag(@RequestBody @Valid DeattachATagRequest request) {
         postTagService.deattachATag(request.getTagId(), request.getTagId());
         return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/find")
+    @Operation(summary = "Find tags containing given searchPhrase in name")
+    public ResponseEntity<Page<PostTagResponse>> findTags(@Nonnull @Param("searchPhrase") String searchPhrase, Pageable pageable) {
+        var result = postTagService.findTagsUsingSearchPhrase(searchPhrase, pageable)
+                .map(PostTagToPostTagResponseMapper.INSTANCE::map);
+        return ResponseEntity.ok().body(result);
     }
 
 }

@@ -1,8 +1,11 @@
 package pl.borovy.personalwebsiteblogapi.post;
 
+import jakarta.annotation.Nonnull;
 import jakarta.transaction.Transactional;
 import java.net.URI;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -69,6 +72,10 @@ public class PostTagService {
         var reference = postTagReferenceRepository.findById(new PostTagReferencePrimaryKey(postId, tagId))
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Tag not attached"));
         postTagReferenceRepository.delete(reference);
+    }
+
+    public Page<PostTag> findTagsUsingSearchPhrase(@Nonnull String searchPhrase, Pageable pageable) {
+        return postTagRepository.findByName(searchPhrase, pageable);
     }
 
     public URI getLocation(PostTag postTag) {

@@ -22,11 +22,13 @@ import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithAnonymousUser;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
+import pl.borovy.personalwebsiteblogapi.model.PostTag;
 import pl.borovy.personalwebsiteblogapi.model.PostTagReference;
 import pl.borovy.personalwebsiteblogapi.model.requests.AttachATagRequest;
 import pl.borovy.personalwebsiteblogapi.model.requests.CreatePostTagRequest;
 import pl.borovy.personalwebsiteblogapi.model.requests.DeattachATagRequest;
 import pl.borovy.personalwebsiteblogapi.post.PostTagReferenceRepository;
+import pl.borovy.personalwebsiteblogapi.post.PostTagRepository;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
@@ -39,6 +41,9 @@ class PostTagControllerTest {
 
     @Autowired
     private MockMvc mvc;
+
+    @Autowired
+    private PostTagRepository postTagRepository;
 
     @Autowired
     private PostTagReferenceRepository postTagReferenceRepository;
@@ -209,6 +214,30 @@ class PostTagControllerTest {
         assertFalse(postTagReferenceRepository.existsByPostIdAndTagId(1, 1));
         assertFalse(postTagReferenceRepository.existsByPostIdAndTagId(2, 1));
         assertTrue(postTagReferenceRepository.existsByPostIdAndTagId(1, 2));
+    }
+
+    @WithAnonymousUser
+    @Test
+    void findTagsByPhrase() throws Exception {
+        postTagRepository.save(PostTag.builder()
+                .name("ABC")
+                .build());
+        postTagRepository.save(PostTag.builder()
+                .name("BCD")
+                .build());
+        postTagRepository.save(PostTag.builder()
+                .name("CDE")
+                .build());
+        postTagRepository.save(PostTag.builder()
+                .name("DEF")
+                .build());
+
+        mvc.perform(get(getFullUrl("/post-tag/find"))
+                .param("searchPhrase", "BC"))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.content[0].name").value("ABC"))
+                .andExpect(jsonPath("$.content[1].name").value("BCD"));
     }
 
 }
