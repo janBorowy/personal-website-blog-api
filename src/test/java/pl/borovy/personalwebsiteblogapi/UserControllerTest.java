@@ -83,7 +83,9 @@ class UserControllerTest {
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.id").exists())
                 .andExpect(jsonPath("$.email").value("newUser@mail.com"))
-                .andExpect(jsonPath("$.username").value("new_user123"));
+                .andExpect(jsonPath("$.username").value("new_user123"))
+                .andExpect(jsonPath("$.createdAt").exists())
+                .andExpect(jsonPath("$.lastModifiedAt").exists());
 
         assertTrue(userRepository.findByEmail("newUser@mail.com").isPresent());
     }

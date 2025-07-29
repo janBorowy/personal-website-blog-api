@@ -1,16 +1,14 @@
 package pl.borovy.personalwebsiteblogapi.model.response;
 
 import java.time.Instant;
-import lombok.Builder;
-import lombok.Value;
+import lombok.Data;
+import lombok.experimental.SuperBuilder;
 
-@Value
-@Builder
-public class UserResponse {
+@Data
+@SuperBuilder
+public class AuditableResponse {
 
-    Long id;
-    String username;
-    String email;
+    UserResponse createdBy;
     UserResponse lastModifiedBy;
     Instant createdAt;
     Instant lastModifiedAt;

@@ -1,8 +1,7 @@
 package pl.borovy.personalwebsiteblogapi;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import java.sql.Date;
-import java.time.LocalDate;
+import java.time.Instant;
 import pl.borovy.personalwebsiteblogapi.model.Post;
 import pl.borovy.personalwebsiteblogapi.model.PostTag;
 import pl.borovy.personalwebsiteblogapi.model.User;
@@ -15,21 +14,20 @@ public class StaticTestObjects {
             .username("user1")
             .encodedPassword("123")
             .email("user@mail.com")
-            .createdAt(Date.valueOf(LocalDate.now()))
+            .createdAt(Instant.now())
             .build();
 
     public static final User ADMIN = User.builder()
             .username("admin")
             .encodedPassword("admin")
             .email("admin@mail.com")
-            .createdAt(Date.valueOf(LocalDate.now()))
+            .createdAt(Instant.now())
             .build();
 
     public static final Post POST = Post.builder()
             .author(ADMIN)
             .title("post title")
             .content("post content")
-            .createdAt(Date.valueOf(LocalDate.now()))
             .build();
 
     public static final PostTag POST_TAG = PostTag.builder()

@@ -1,17 +1,17 @@
 package pl.borovy.personalwebsiteblogapi.model.response;
 
-import java.sql.Date;
-import lombok.Builder;
+import lombok.EqualsAndHashCode;
 import lombok.Value;
+import lombok.experimental.SuperBuilder;
 
 @Value
-@Builder
-public class PostResponse {
+@SuperBuilder
+@EqualsAndHashCode(callSuper = false)
+public class PostResponse extends AuditableResponse {
 
     Long id;
     String title;
     String content;
     UserResponse author;
-    Date createdAt;
 
 }

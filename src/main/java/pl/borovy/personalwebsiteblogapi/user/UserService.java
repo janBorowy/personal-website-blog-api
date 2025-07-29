@@ -3,8 +3,6 @@ package pl.borovy.personalwebsiteblogapi.user;
 import jakarta.annotation.Nonnull;
 import jakarta.transaction.Transactional;
 import java.net.URI;
-import java.sql.Date;
-import java.time.LocalDate;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -43,7 +41,6 @@ public class UserService {
                 .email(request.getEmail())
                 .username(request.getUsername())
                 .encodedPassword(passwordEncoder.encode(request.getPlainPassword()))
-                .createdAt(Date.valueOf(LocalDate.now()))
                 .enabled(true)
                 .build();
         var savedUser = userRepository.save(user);

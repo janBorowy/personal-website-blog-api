@@ -3,8 +3,6 @@ package pl.borovy.personalwebsiteblogapi;
 import static pl.borovy.personalwebsiteblogapi.StaticTestObjects.ADMIN;
 import static pl.borovy.personalwebsiteblogapi.StaticTestObjects.USER;
 
-import java.sql.Date;
-import java.time.LocalDate;
 import java.util.List;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.boot.test.context.TestConfiguration;
@@ -51,22 +49,24 @@ public class PostgresTestContainerConfig {
             userRepository.save(savedUser);
 
             postRepository.save(Post.builder()
-                            .author(ADMIN)
-                            .title("Test post")
-                            .content("# this is for testing purposes")
-                            .createdAt(Date.valueOf(LocalDate.now()))
+                    .author(savedAdmin)
+                    .createdBy(savedAdmin)
+                    .lastModifiedBy(savedAdmin)
+                    .title("Test post")
+                    .content("# this is for testing purposes")
                     .build());
 
             postRepository.save(Post.builder()
-                    .author(ADMIN)
+                    .author(savedAdmin)
+                    .createdBy(savedAdmin)
+                    .lastModifiedBy(savedAdmin)
                     .title("Another test post")
                     .content("# this is another post for testing additional purposes")
-                    .createdAt(Date.valueOf(LocalDate.now()))
                     .build());
 
             postTagRepository.save(PostTag.builder()
-                            .name("test post tag")
-                            .description("this is a test post tag for testing purposes")
+                    .name("test post tag")
+                    .description("this is a test post tag for testing purposes")
                     .build());
 
             postTagRepository.save(PostTag.builder()

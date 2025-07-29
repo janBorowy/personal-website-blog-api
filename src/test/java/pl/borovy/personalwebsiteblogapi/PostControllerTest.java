@@ -5,6 +5,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static pl.borovy.personalwebsiteblogapi.StaticTestObjects.ADMIN;
 import static pl.borovy.personalwebsiteblogapi.StaticTestObjects.OBJECT_MAPPER;
 import static pl.borovy.personalwebsiteblogapi.StaticTestObjects.POST;
 
@@ -62,7 +63,11 @@ class PostControllerTest {
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.id").exists())
                 .andExpect(jsonPath("$.title").value(POST.getTitle()))
-                .andExpect(jsonPath("$.content").value(POST.getContent()));
+                .andExpect(jsonPath("$.content").value(POST.getContent()))
+                .andExpect(jsonPath("$.createdBy.username").value(ADMIN.getUsername()))
+                .andExpect(jsonPath("$.lastModifiedBy.username").value(ADMIN.getUsername()))
+                .andExpect(jsonPath("$.createdAt").exists())
+                .andExpect(jsonPath("$.lastModifiedAt").exists());
     }
 
     @Test

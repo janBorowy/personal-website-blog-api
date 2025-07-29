@@ -1,8 +1,6 @@
 package pl.borovy.personalwebsiteblogapi.post;
 
 import java.net.URI;
-import java.sql.Date;
-import java.time.LocalDate;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -31,7 +29,6 @@ public class PostService {
                                 .orElseThrow(() -> new IllegalStateException("Principal user does not exist in repository")))
                         .title(savePostRequest.getTitle())
                         .content(savePostRequest.getContent())
-                        .createdAt(Date.valueOf(LocalDate.now()))
                         .build()
         );
     }
